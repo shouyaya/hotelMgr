@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yzy.Dao.FloorinfoMapper">
+	<resultMap id="floorMap" type="Floorinfo">
+		<id property="floorid" column="floorId" javaType="Integer"></id>
+		<result property="floorname" column="floorName" javaType="String"></result>
+	</resultMap>
+
+	<select id="findAllFloor" resultMap="floorMap">
+		select * from floorInfo
+	</select>
+
+</mapper>

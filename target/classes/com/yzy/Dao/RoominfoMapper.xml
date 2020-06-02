@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yzy.Dao.RoominfoMapper">
+	<resultMap id="roomInfoMap" type="Roominfo">
+		<id property="roomid" column="roomId" javaType="String"></id>
+		<result property="typeid" column="typeId" javaType="String"></result>
+		<result property="floorid" column="floorId" javaType="Integer"></result>
+		<result property="ratednum" column="ratedNum" javaType="Integer"></result>
+		<result property="bednum" column="bedNum" javaType="Integer"></result>
+		<result property="roomdescription" column="roomDescription" javaType="String"></result>
+		<result property="remark" column="remark" javaType="String"></result>
+		<result property="status" column="status" javaType="String"></result>
+		<association property="roomtype" javaType="Roomtype" column="typeid" select="com.yzy.Dao.RoomtypeMapper.findById"></association>
+	</resultMap>
+
+	<select id="findAll" resultMap="roomInfoMap">
+		select * from roominfo where status='未住'
+	</select>
+
+	<select id="findRoomTypeById" resultType="String">
+		select typeId from roominfo where roomId=#{id}
+	</select>
+
+	<update id="updateRoomUsed" parameterType="String">
+		update roomInfo set status='已住' where roomId=#{roomId}
+	</update>
+
+	<update id="updateRoomUsable" parameterType="String">
+		update roomInfo set status='未住' where roomId=#{roomId}
+	</update>
+
+	<select id="realFindAll" resultMap="roomInfoMap">
+		select * from roominfo
+		<if test='flag=="used"'>
+			limit #{offset},#{size}
+		</if>
+	</select>
+
+	<select id="findById" resultMap="roomInfoMap">
+		select * from roominfo where roomId=#{id}
+	</select>
+
+	<select id="findByTypeId" resultMap="roomInfoMap">
+		select * from roominfo where typeId=#{typeId}
+	</select>
+
+	<delete id="deleteById">
+		delete from roominfo where roomId=#{id}
+	</delete>
+
+	<update id="updateRoomById" parameterType="Roominfo">
+		update roomInfo
+		<set>
+			roomId=#{roomid},
+			typeId=#{typeid},
+			floorId=#{floorid},
+			ratedNum=#{ratednum},
+			bedNum=#{bednum},
+			roomDescription=#{roomdescription},
+			remark=#{remark},
+			status=#{status}
+		</set>
+		where roomId=#{roomid}
+	</update>
+
+	<insert id="insertRoom" parameterType="Roominfo">
+		insert roomInfo value(#{roomid},#{typeid},#{floorid},#{ratednum},#{bednum},#{roomdescription},#{remark},#{status})
+	</insert>
+</mapper>

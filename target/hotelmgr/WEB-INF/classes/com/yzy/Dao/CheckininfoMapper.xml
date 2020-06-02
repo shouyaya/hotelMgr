@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yzy.Dao.CheckininfoMapper">
+	<resultMap id="checkInInfoMap" type="Checkininfo">
+		<id property="checkid" column="checkId" javaType="String"></id>
+		<result property="checkname" column="checkName" javaType="String"></result>
+		<result property="checkphone" column="checkPhone" javaType="String"></result>
+		<result property="checkidcard" column="checkIDcard" javaType="String"></result>
+		<result property="typeid" column="typeId" javaType="String"></result>
+		<result property="arriretime" column="arrireTime" javaType="String"></result>
+		<result property="leavetime" column="leaveTime" javaType="String"></result>
+		<result property="checkstate" column="checkState" javaType="String"></result>
+		<result property="checknum" column="checkNum" javaType="Integer"></result>
+		<result property="roomid" column="roomId" javaType="String"></result>
+		<result property="price" column="price" javaType="String"></result>
+		<result property="checkprice" column="checkPrice" javaType="String"></result>
+		<result property="discount" column="discount" javaType="Integer"></result>
+		<result property="discountreason" column="discountReason" javaType="String"></result>
+		<result property="addbed" column="addBed" javaType="String"></result>
+		<result property="addbedprice" column="addBedPrice" javaType="String"></result>
+		<result property="deposit" column="deposit" javaType="String"></result>
+		<result property="checkmoney" column="checkMoney" javaType="String"></result>
+		<result property="checkdate" column="checkDate" javaType="String"></result>
+		<result property="remark" column="remark" javaType="String"></result>
+		<result property="operatorid" column="operatorId" javaType="String"></result>
+	</resultMap>
+
+	<insert id="insertCheckInInfo" parameterType="Checkininfo">
+		insert checkInInfo values(#{checkid},#{checkname},#{checkphone},#{checkidcard},#{typeid},#{arriretime},#{leavetime},
+		#{checkstate},#{checknum},#{roomid},#{price},#{checkprice},#{discount},#{discountreason},#{addbed},
+		#{addbedprice},#{deposit},#{checkmoney},#{checkdate},#{remark},#{operatorid})
+	</insert>
+
+	<select id="findAll" resultMap="checkInInfoMap">
+		select * from checkininfo
+		<if test='flag=="used"'>
+			limit #{offset},#{size}
+		</if>
+	</select>
+
+	<select id="findOrderUsableById" resultMap="checkInInfoMap" parameterType="String">
+		select * from checkininfo where checkid=#{orderId} and checkState='未退押金'
+	</select>
+
+	<select id="findAllOrderUsable" resultMap="checkInInfoMap">
+		select * from checkininfo where checkState='未退押金'
+	</select>
+
+	<update id="updateOrderUsed" parameterType="String">
+		update checkininfo set checkState='已退押金' where checkId=#{id}
+	</update>
+
+	<select id="findOrderById" parameterType="String" resultMap="checkInInfoMap">
+		select * from checkininfo where checkId=#{orderId}
+	</select>
+
+	<select id="findOrderByName" parameterType="String" resultMap="checkInInfoMap">
+		select * from checkininfo where checkName=#{checkName}
+	</select>
+
+	<delete id="deleteOrderById" parameterType="String">
+		delete from checkininfo where checkId=#{orderId}
+	</delete>
+
+	<update id="updateOrderById" parameterType="Checkininfo">
+		update checkininfo
+		<set>
+			checkId=#{checkid},
+			checkName=#{checkname},
+			checkPhone=#{checkphone},
+			checkIDcard=#{checkidcard},
+			typeId=#{typeid},
+			arrireTime=#{arriretime},
+			leaveTime=#{leavetime},
+			checkState=#{checkstate},
+			checkNum=#{checknum},
+			roomId=#{roomid},
+			price=#{price},
+			checkPrice=#{checkprice},
+			discount=#{discount},
+			discountReason=#{discountreason},
+			addBed=#{addbed},
+			addBedPrice=#{addbedprice},
+			deposit=#{deposit},
+			checkMoney=#{checkmoney},
+			remark=#{remark},
+			operatorId=#{operatorid}
+		</set>
+		where checkId=#{checkid}
+	</update>
+</mapper>

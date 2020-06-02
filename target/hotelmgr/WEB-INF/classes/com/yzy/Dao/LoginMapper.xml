@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yzy.Dao.LoginMapper">
+
+	<resultMap id="loginMap" type="Login">
+		<id property="loginid" column="loginId" javaType="Integer"></id>
+		<result property="loginname" column="loginName" javaType="String"></result>
+		<result property="loginpwd" column="loginPwd" javaType="String"></result>
+		<result property="loginnickname" column="loginNickName" javaType="String"></result>
+		<result property="loginadmin" column="loginAdmin" javaType="Integer"></result>
+	</resultMap>
+
+	<select id="findByUsername" resultMap="loginMap" parameterType="String">
+		select  * from login where loginName=#{loginName}
+	</select>
+	<select id="findAll" resultMap="loginMap">
+		select * from login
+	</select>
+</mapper>

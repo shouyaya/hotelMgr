@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+	PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yzy.Dao.BillinfoMapper">
+	<resultMap id="BillInfoMap" type="Billinfo">
+		<id property="billid" column="billId" javaType="Integer"></id>
+		<result property="checkid" column="checkId" javaType="String"></result>
+		<result property="costmoney" column="costMoney" javaType="String"></result>
+		<result property="costdate" column="costDate" javaType="String"></result>
+		<result property="returndeposit" column="returnDeposit"></result>
+		<result property="remark" column="remark" javaType="String"></result>
+	</resultMap>
+
+	<insert id="insertBillInfo" parameterType="Billinfo">
+		insert billInfo(checkId,costMoney,costDate,returnDeposit,remark) value(#{checkid},#{costmoney},#{costdate},#{returndeposit},#{remark})
+	</insert>
+
+	<select id="findAll" resultMap="BillInfoMap">
+		select * from billinfo
+		<if test='flag=="used"'>
+			limit #{offset},#{size}
+		</if>
+	</select>
+
+	<select id="findBillById" resultMap="BillInfoMap" parameterType="Integer">
+		select * from billinfo where billId=#{id}
+	</select>
+
+	<select id="findBillByOrderId" resultMap="BillInfoMap">
+		select * from billinfo where checkId=#{orderId}
+	</select>
+
+	<delete id="deleteBillById" parameterType="Integer">
+		delete from billInfo where #{id}
+	</delete>
+
+</mapper>
